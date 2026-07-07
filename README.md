@@ -15,6 +15,10 @@
     <li>Posterior a este comando, se puede volver a ejecutar los comandos anteriores.</li>
     <li>Ahora se debe codificar el servidor backend.</li>
     <li>Para iniciar el servidor, debemos abrie el terminal y ubicarnos en la carpeta que contiene nuestro servidor.</li>
-    <li>Dentro de la carpeta, ejecutaremos el comando <code>node miServidor.js</code></li>
+    <li>Dentro de la carpeta, ejecutaremos el comando <code>node server.js</code></li>
     <li>Para detener el servidor, en el terminal ejecutamos el comando <code>ctrl + c</code></li>
 </ol>
+
+<hr>
+
+### Profe, el código funciona igual que el suyo, no necesita insertar más datos o algo así (como los paises o comunas).
