@@ -32,7 +32,18 @@ async function obtenerUsuarios() {
                         return respuesta;
                     }
                 },
-                { data: 'fechaNacimiento' },
+                { 
+                    data: 'fechaNacimiento',
+                    render: function (data) {
+                        if (!data) return 'Sin fecha';
+                        const fecha = new Date(data);
+                        const dia = String(fecha.getUTCDate()).padStart(2, '0');
+                        const mes = String(fecha.getUTCMonth() + 1).padStart(2, '0');
+                        const anio = fecha.getUTCFullYear();
+                        
+                        return `${dia}-${mes}-${anio}`;
+                    }
+                },
                 { data: 'gentilicio[0].nombre' },
                 { data: 'activo' },
                 {

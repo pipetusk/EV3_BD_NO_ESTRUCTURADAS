@@ -48,7 +48,6 @@ function validarFormulario() {
     }
 
     if (!validarInput(campoTelefono)) {
-        agregarError('<li>El campo TELÉFONO es requerido.</li>');
         formularioValido = false;
     }
     
@@ -64,6 +63,10 @@ function validarFormulario() {
 
     if (!validarInput(campoCalle)) {
         agregarError('<li>El campo CALLE es requerido.</li>');
+        formularioValido = false;
+    }
+
+    if (!validarFechaNacimiento(campoFechaNacimiento)) {
         formularioValido = false;
     }
 
@@ -358,3 +361,38 @@ function validarTelefono(elemento) {
         return false;
     }
 };
+
+// Función para validar la fecha de nacimiento
+function validarFechaNacimiento(elemento) {
+    const campo = $(elemento);
+    const valorFecha = campo.val();
+
+    // Limpiamos los errores de fecha previos
+    $('#errorFechaNacimiento').remove();
+
+    // Validar que no esté vacía
+    if (!valorFecha) {
+        agregarError('<li id="errorFechaNacimiento">El campo FECHA DE NACIMIENTO es requerido.</li>');
+        campo.addClass('is-invalid').removeClass('is-valid');
+        return false;
+    }
+
+    // Convertimos el valor ingresado a un objeto Date (forzando la hora a 00:00:00 para evitar desfases de zona horaria)
+    const fechaIngresada = new Date(valorFecha + 'T00:00:00'); 
+    const fechaActual = new Date();
+    
+    // Dejamos la fecha actual sin horas ni minutos para comparar solo los días
+    fechaActual.setHours(0, 0, 0, 0); 
+
+    // Validar que la fecha sea anterior a hoy
+    if (fechaIngresada >= fechaActual) {
+        agregarError('<li id="errorFechaNacimiento">La FECHA DE NACIMIENTO debe ser anterior a la fecha actual.</li>');
+        campo.addClass('is-invalid').removeClass('is-valid');
+        return false;
+    }
+
+    // Si pasa todas las validaciones
+    campo.removeClass('is-invalid').addClass('is-valid');
+    return true;
+};
+

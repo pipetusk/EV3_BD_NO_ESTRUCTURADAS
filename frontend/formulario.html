@@ -85,7 +85,7 @@
                     </div>
                     <div class="col">
                         <label for="input_telefono" class="form-label">Telefono:</label>
-                        <input type="text" class="form-control" name="telefono" id="input_telefono" placeholder="Ingrese su teléfono">
+                        <input type="text" class="form-control" name="telefono" id="input_telefono" onchange="validarTelefono(this)" placeholder="Ingrese su teléfono">
                     </div>
                 </div>
                 <br>
@@ -111,7 +111,7 @@
 
                     <div class="col">
                         <label for="inputNacimiento" class="form-label">Fecha de Nacimiento:</label>
-                        <input type="date" class="form-control" name="fechaNacimiento" id="inputNacimiento">
+                        <input type="date" class="form-control" name="fechaNacimiento" id="inputNacimiento" onchange="validarFechaNacimiento(this)">
                     </div>
                 </div>
                 <br>

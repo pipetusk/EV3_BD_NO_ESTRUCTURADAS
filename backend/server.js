@@ -37,7 +37,16 @@ const usuario = new mongoose.Schema({
     rut: String,
     telefono: String,
     genero: String,
-    fechaNacimiento: String,
+    fechaNacimiento: {
+        type: Date,
+        required: true,
+        validate: {
+            validator: function(valorFecha) {
+                return valorFecha < new Date();
+            },
+            message: 'La fecha de nacimiento debe ser anterior a la actual'
+        }
+    },
     nacionalidad: String,
     direccion:[direccion],
     activo: Boolean,
