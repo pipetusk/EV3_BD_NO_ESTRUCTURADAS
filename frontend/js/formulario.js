@@ -73,7 +73,6 @@ function validarFormulario() {
     if (formularioValido) {
         campoError.hide();
         listaErrores.empty();
-        alert('Formulario válido. Enviando datos...');
 
         const formulario = $('#formularioRegistro')[0];
         const dataForm = new FormData(formulario);
@@ -105,6 +104,7 @@ function validarFormulario() {
                 const data = await respuesta.json();
                 console.log('Datos alcenados correctamente: ', data);
                 if (respuesta.ok) {
+                    alert('Usuario registrado exitosamente, enviando datos.');
                     window.location.href = './listado.html';
                 }
             } catch (error) {
@@ -120,12 +120,10 @@ function validarFormulario() {
 function validarInput(elemento) {
     const campo = $(elemento)
     if ($(elemento).val() == '') {
-        campo.addClass('is-invalid');
-        campo.removeClass('is-valid');
+        campo.addClass('is-invalid').removeClass('is-valid');
         return false
     } else {
-        campo.removeClass('is-invalid');
-        campo.addClass('is-valid');
+        campo.removeClass('is-invalid').addClass('is-valid');
         return true
     }
 };

@@ -73,6 +73,28 @@ const comuna = new mongoose.Schema({
 
 const Comuna = mongoose.model('Comuna', comuna, 'comunas');
 
+// 1. Crear la nueva colección en su base de datos
+// 2. Crear el mongoose.Schema del nuevo objeto
+const citaMedica = new mongoose.Schema({
+    usuario: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Usuario',
+        required: true
+    },
+    especialidad: String,
+    medico: String,
+    centroMedico: String,
+    fecha: Date,
+    hora: String,
+    costo: Number,
+    diagnostico: String,
+    tratamiento: String,
+    observaciones: String
+});
+
+// 3. Crear el nuevo modelo mongoose.Model basado en el schema creado, asociando la colección correspondiente.
+const CitaMedica = mongoose.model('CitaMedica', citaMedica, 'citas_medicas');
+
 // Método POST para guardar datos de USUARIO
 // Definimos el "ENDPOINT" o ruta final donde se canalizará la REQUEST (solicitud)
 aplicacion.post('/guardarUsuario', async (request, response) => {
@@ -107,6 +129,32 @@ aplicacion.post('/guardarPaises', async (request, response) => {
     }
     catch (excepcion) {
         response.status(500).json({ message: 'No ha sido posible guardar los datos: ', excepcion });
+    }
+});
+
+// 4. Crear el método POST para persistir el ojeto en la colección correspondiente. 
+// Método POST para registrar una cita médica
+aplicacion.post('/guardarCita', async (request, response) => {
+    try {
+        const { usuario, especialidad, medico, centroMedico, fecha, hora, costo, diagnostico, tratamiento, observaciones } = request.body;
+        
+        const nuevaCita = new CitaMedica({
+            usuario,
+            especialidad: especialidad,
+            medico,
+            centroMedico,
+            fecha,
+            hora,
+            costo,
+            diagnostico,
+            tratamiento,
+            observaciones
+        });
+
+        await nuevaCita.save();
+        response.status(200).json({ message: 'Cita médica guardada correctamente' });
+    } catch (excepcion) {
+        response.status(500).json({ message: 'No fue posible guardar la cita médica: ', excepcion });
     }
 });
 
@@ -150,6 +198,27 @@ aplicacion.get('/obtenerComunas', async (request, response) => {
         response.json(comunas);
     } catch (excepcion) {
         response.status(500).json({ message: 'No ha sido posible obtener los datos. ', excepcion });
+    }
+});
+
+// 5. Crear el método GET para consultar el objeto en la colección correspondiente.
+// Método GET para consultar las citas médicas vinculando al usuario con $lookup
+aplicacion.get('/obtenerCitas', async (request, response) => {
+    try {
+        const citas = await CitaMedica.aggregate([
+            {
+                // 6. En su método GET recuerde crear la agregación ($lookup) necesaria para traer los datos del usuario junto con los de su objeto.
+                $lookup: {
+                    from: 'usuarios',
+                    localField: 'usuario',
+                    foreignField: '_id',
+                    as: 'datosUsuario'
+                }
+            }
+        ]);
+        response.json(citas);
+    } catch (excepcion) {
+        response.status(500).json({ message: 'No fue posible obtener las citas médicas. ', excepcion });
     }
 });
 

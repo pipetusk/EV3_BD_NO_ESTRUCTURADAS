@@ -14,20 +14,19 @@
     <script src="./js/jQuery v4.0.0.js"></script>
     <script src="./js/formulario.js"></script>
 
-    <title>Formulario Registro</title>
+    <title>Formulario de registro</title>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
         <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <a class="navbar-brand">Felipe Huenchuleo</a>
+            <div class="collapse navbar-collapse">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="./formulario.html">Formulario Registro</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="./listado.html">Listado</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link active" href="./formulario.html">Registro Usuario</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./listado.html">Listado Usuarios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./cita.html">Registrar Cita</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./listado_citas.html">Listado Citas</a></li>
                 </ul>
             </div>
         </div>
@@ -43,7 +42,7 @@
         </div>
 
         <form id="formularioRegistro">
-            <p class="h1">Formulario de Registro</p>
+            <p class="h1">Formulario de registro</p>
             <hr>
 
             <div class="container">
@@ -85,7 +84,7 @@
                     </div>
                     <div class="col">
                         <label for="input_telefono" class="form-label">Telefono:</label>
-                        <input type="text" class="form-control" name="telefono" id="input_telefono" onchange="validarTelefono(this)" placeholder="Ingrese su teléfono">
+                        <input type="text" class="form-control" name="telefono" id="input_telefono" onchange="validarTelefono(this)" placeholder="Ingrese su teléfono: 569XXXXXXXX">
                     </div>
                 </div>
                 <br>
