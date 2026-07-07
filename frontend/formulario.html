@@ -51,26 +51,26 @@
                 <br>
                 <div class="row">
                     <div class="col">
-                        <label for="input_nombre" class="form-label">Nombre Usuario:</label>
+                        <label for="input_nombre" class="form-label">* Nombre Usuario:</label>
                         <input class="form-control" type="text" name="nombre" id="input_nombre"
                             placeholder="Ingrese su nombre" onchange="validarInput(this)">
                     </div>
                     <div class="col">
-                        <label for="input_correo" class="form-label">Correo Electrónico:</label>
-                        <input class="form-control" type="email" name="correo" id="input_correo"
-                            placeholder="Ingrese su correo electrónico" onchange="validarCorreo(this)">
+                        <label for="inputRut" class="form-label">* Rut:</label>
+                        <input type="text" class="form-control" name="rut" id="inputRut"
+                            onchange="validaRut(this)" placeholder="Ingrese su rut">
                     </div>
                 </div>
                 <br>
 
                 <div class="row">
                     <div class="col">
-                        <label for="input_contrasena" class="form-label">Contraseña:</label>
+                        <label for="input_contrasena" class="form-label">* Contraseña:</label>
                         <input type="password" class="form-control" name="contrasena" id="input_contrasena"
                             onchange="validarContrasena(this)" placeholder="Ingrese su contraseña">
                     </div>
                     <div class="col">
-                        <label for="input_rep_contrasena" class="form-label">Repetir Contraseña:</label>
+                        <label for="input_rep_contrasena" class="form-label">* Repetir Contraseña:</label>
                         <input type="password" class="form-control" name="input_repetir_contrasena"
                             id="input_rep_contrasena" onchange="validarRepetirContrasena(this)" placeholder="Repita su contraseña">
                     </div>
@@ -79,14 +79,13 @@
 
                 <div class="row">
                     <div class="col">
-                        <label for="input_rut" class="form-label">Rut:</label>
-                        <input type="text" class="form-control" name="rut" id="input_rut"
-                            onchange="validarRut(this)" placeholder="Ingrese su rut">
+                        <label for="input_correo" class="form-label">* Correo Electrónico:</label>
+                        <input class="form-control" type="email" name="correo" id="input_correo"
+                            placeholder="Ingrese su correo electrónico" onchange="validarCorreo(this)">
                     </div>
                     <div class="col">
                         <label for="input_telefono" class="form-label">Telefono:</label>
-                        <input type="text" class="form-control" name="telefono" id="input_telefono"
-                            onchange="validarTelefono(this)" placeholder="Ingrese su teléfono">
+                        <input type="text" class="form-control" name="telefono" id="input_telefono" placeholder="Ingrese su teléfono">
                     </div>
                 </div>
                 <br>
@@ -94,16 +93,16 @@
                 <div class="row">
                     <div class="col">
                         <label class="form-label" for="selectGenero">Género:</label>
-                        <select class="form-select" name="genero" id="selectGenero" onchange="validarInput(this)">
+                        <select class="form-select" name="genero" id="selectGenero">
                             <option selected value="">Seleccione su Género</option>
-                            <option value="masc">Masculino</option>
-                            <option value="fem">Femenino</option>
-                            <option value="otro">Otro</option>
+                            <option value="masc">M</option>
+                            <option value="fem">F</option>
+                            <option value="otro">O</option>
                         </select>
                     </div>
 
                     <div class="col">
-                        <label class="form-label" for="selectNacionalidad">Nacionalidad:</label>
+                        <label class="form-label" for="selectNacionalidad">* Nacionalidad:</label>
                         <select class="form-select" name="nacionalidad" id="selectNacionalidad"
                             onchange="validarInput(this)">
                             <option selected value="">Seleccione su Nacionalidad</option>
@@ -112,8 +111,7 @@
 
                     <div class="col">
                         <label for="inputNacimiento" class="form-label">Fecha de Nacimiento:</label>
-                        <input type="date" class="form-control" name="fechaNacimiento" id="inputNacimiento"
-                            onchange="validarInput(this)">
+                        <input type="date" class="form-control" name="fechaNacimiento" id="inputNacimiento">
                     </div>
                 </div>
                 <br>
@@ -131,7 +129,7 @@
                 <br>
                 <div class="row">
                     <div class="col">
-                        <label class="form-label" for="selectComuna">Comuna:</label>
+                        <label class="form-label" for="selectComuna">* Comuna:</label>
                         <select class="form-select" name="comuna" id="selectComuna"
                             onchange="validarInput(this)">
                             <option selected value="">Seleccione su Comuna</option>
@@ -139,8 +137,8 @@
                     </div>
                     
                     <div class="col">
-                        <label for="input_calle" class="form-label">Calle:</label>
-                        <input type="text" class="form-control" name="calle" id="input_calle" placeholder="Ingrese su calle">
+                        <label for="input_calle" class="form-label">* Calle:</label>
+                        <input type="text" class="form-control" name="calle" id="input_calle" onchange="validarInput(this)" placeholder="Ingrese su calle">
                     </div>
                 </div>
                 <br>
@@ -168,6 +166,10 @@
                         <button type="button" class="btn btn-secondary me-2">Cancelar</button>
                         <button type="button" class="btn btn-primary" onclick="validarFormulario()">Aceptar</button>
                     </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col"><p>Los campos marcados con <strong>*</strong> son requeridos.</p></div>
                 </div>
                 <br>
             </div>

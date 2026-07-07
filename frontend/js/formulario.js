@@ -8,12 +8,11 @@ function validarFormulario() {
     let campoCorreo = $('#input_correo');
     let campoContrasena = $('#input_contrasena');
     let campoRepetirContrasena = $('#input_rep_contrasena');
-    let campoRut = $('#input_rut');
+    let campoRut = $('#inputRut');
     let campoTelefono = $('#input_telefono');
     let selectGenero = $('#selectGenero');
     let selectNacionalidad = $('#selectNacionalidad');
     let campoFechaNacimiento = $('#inputNacimiento');
-    let campoArchivo = $('#inputFoto');
     let campoError = $('#errorFormulario');
     let listaErrores = $('#listaErrores');
     let selectComuna = $('#selectComuna');
@@ -43,8 +42,8 @@ function validarFormulario() {
         formularioValido = false;
     }
 
-    if (!validarInput(campoRut)) {
-        agregarError('<li>El campo RUT es requerido.</li>');
+    if (!validaRut(campoRut)) {
+        agregarError('<li id="errorRutRequerido">El campo RUT es requerido.</li>');
         formularioValido = false;
     }
 
@@ -52,19 +51,9 @@ function validarFormulario() {
         agregarError('<li>El campo TELÉFONO es requerido.</li>');
         formularioValido = false;
     }
-
-    if (!validarInput(selectGenero)) {
-        agregarError('<li>El campo GÉNERO es requerido.</li>');
-        formularioValido = false;
-    }
     
     if (!validarInput(selectNacionalidad)) {
         agregarError('<li>El campo NACIONALIDAD es requerido.</li>');
-        formularioValido = false;
-    }
-
-    if (!validarInput(campoFechaNacimiento)) {
-        agregarError('<li>El campo FECHA DE NACIMIENTO es requerido.</li>');
         formularioValido = false;
     }
 
@@ -238,55 +227,107 @@ async function cargarInfoComunas() {
     }
 };
 
-const algoritmoRut = {
-    valida: function (rutIngresado) {
-        let rutLimpio = rutIngresado.replace(/[\.\s]/g, "").replace("‐", "-");
-
-        if (!rutLimpio.includes("-") && rutLimpio.length > 1) {
-            rutLimpio = rutLimpio.slice(0, -1) + "-" + rutLimpio.slice(-1);
-        }
-
-        if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutLimpio)) {
-            return false;
-        }
-
-        let partes = rutLimpio.split('-');
-        let digitoVerificador = partes[1].toLowerCase(); 
-        let numeroRut = partes[0];
-        
-        return (this.dv(numeroRut) == digitoVerificador);
-    },
-    
-    dv: function(T) {
-        let M = 0, S = 1;
-        for(; T; T = Math.floor(T / 10)) {
-            S = (S + T % 10 * (9 - M++ % 6)) % 11;
-        }
-        return S ? S - 1 : 'k';
-    }
-};
-
-function validarRut(elemento) {
+function validaRut(elemento) {
     if (validarInput(elemento)) {
         const campo = $(elemento);
-        const rut = campo.val();
-
-        if (algoritmoRut.valida(rut)) {
-            campo.removeClass('is-invalid');
-            campo.addClass('is-valid');
-            return true;
-        } else {
-            $('#errorRutRequerido').remove(); 
-            agregarError('<li>El RUT es inválido, recuerde que el formato es XXXXXXXX-X</li>');
-            
+        let rutCompleto = $(elemento).val();
+        // Limpiar el RUT de caracteres extraños
+        rutCompleto = rutCompleto.replace(/[.-]/g, '');
+        if (!/^[0-9]+[0-9kK]{1}$/.test(rutCompleto)) {
+            $('#errorRutRequerido').remove();
+            agregarError('<li id="errorFormatoRut">El formato de RUT no corresponde.</li>');
             campo.addClass('is-invalid');
             campo.removeClass('is-valid');
-            return false;
-        }
-    } else {
-        return false;
+            return false
+        } else {
+            const tmp = rutCompleto.substring(0, rutCompleto.length - 1);
+            const digv = rutCompleto.substring(rutCompleto.length - 1).toLowerCase();
+
+            let suma = 0;
+            let modulo = 2;
+
+            // Algoritmo Módulo 11
+            for (let i = tmp.length - 1; i >= 0; i--) {
+                suma += parseInt(tmp.charAt(i)) * modulo;
+                modulo = modulo === 7 ? 2 : modulo + 1;
+            }
+
+            const res = 11 - (suma % 11);
+            let dvEsperado;
+
+            if (res === 11) {
+                dvEsperado = '0';
+            } else if (res === 10) {
+                dvEsperado = 'k';
+            } else {
+                dvEsperado = res.toString();
+            }
+
+            if (dvEsperado === digv) {
+                campo.removeClass('is-invalid');
+                campo.addClass('is-valid');
+                return true
+            } else {
+                $('#errorRutRequerido').remove();
+                $('#errorFormatoRut').remove();
+                agregarError('<li>RUT inválido.</li>');
+                campo.addClass('is-invalid');
+                campo.removeClass('is-valid');
+                return false
+            };
+        };
     }
 };
+
+// const algoritmoRut = {
+//     valida: function (rutIngresado) {
+//         let rutLimpio = rutIngresado.replace(/[\.\s]/g, "").replace("‐", "-");
+
+//         if (!rutLimpio.includes("-") && rutLimpio.length > 1) {
+//             rutLimpio = rutLimpio.slice(0, -1) + "-" + rutLimpio.slice(-1);
+//         }
+
+//         if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test(rutLimpio)) {
+//             return false;
+//         }
+
+//         let partes = rutLimpio.split('-');
+//         let digitoVerificador = partes[1].toLowerCase(); 
+//         let numeroRut = partes[0];
+        
+//         return (this.dv(numeroRut) == digitoVerificador);
+//     },
+    
+//     dv: function(T) {
+//         let M = 0, S = 1;
+//         for(; T; T = Math.floor(T / 10)) {
+//             S = (S + T % 10 * (9 - M++ % 6)) % 11;
+//         }
+//         return S ? S - 1 : 'k';
+//     }
+// };
+
+// function validarRut(elemento) {
+//     if (validarInput(elemento)) {
+//         const campo = $(elemento);
+//         const rut = campo.val();
+
+//         if (algoritmoRut.valida(rut)) {
+//             campo.removeClass('is-invalid');
+//             campo.addClass('is-valid');
+//             return true;
+//         } else {
+//             $('#errorRutRequerido').remove(); 
+//             agregarError('<li>El RUT es inválido, recuerde que el formato es XXXXXXXX-X</li>');
+            
+//             campo.addClass('is-invalid');
+//             campo.removeClass('is-valid');
+//             return false;
+//         }
+//     } else {
+//         return false;
+//     }
+// };
 
 function esTelefonoChilenoValido(telefono) {
     let telefonoLimpio = telefono.replace(/[\s\-+]/g, '');
